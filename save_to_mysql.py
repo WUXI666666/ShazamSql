@@ -5,7 +5,7 @@ def save_to_mysql(server_tables: List[np.ndarray], song_names: List[str]) -> Non
     conn = mysql.connector.connect(
         host='localhost',
         user='root',
-        password='a15182757117!',
+        password='123456',
         database='audio_fingerprint'
     )
     cursor = conn.cursor()

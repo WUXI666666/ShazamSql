@@ -87,7 +87,7 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
     conn = mysql.connector.connect(
         host='localhost',
         user='root',
-        password='a15182757117!',
+        password='123456',
         database='audio_fingerprint'
     )
     cursor = conn.cursor()
@@ -198,7 +198,7 @@ def compare_dir(path, fn_query):
                 print(Delta[shift_max])
                 plot_constellation_map(CMP_d, np.log(1 + 1 * Y_d), color='r', s=30, title=fn)
 
-# recognize_song_from_path("./tests/test_3.wav")
+recognize_song_from_path("./tests/test_3.wav")
 
-recognize_song(recordaudio())
+# recognize_song(recordaudio())
 plt.show()

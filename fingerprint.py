@@ -4,30 +4,43 @@ import matplotlib.pyplot as plt
 import scipy
 import librosa
 from scipy import ndimage
-def createfingerprint(x, plot=False):
-    # 生成频谱图并转换为对数刻度
-    X = lr.stft(x, n_fft=1024, hop_length=100, window="blackman")
-    X = np.abs(X)
-    L, W = np.shape(X)
+def compute_spectrogram(x, Fs=8192, N=1024, H=100, bin_max=128, frame_max=None):
+    X = lr.stft(x, n_fft=N, hop_length=H, win_length=N, window='blackman')
+    if bin_max is None:
+        bin_max = X.shape[0]
+    if frame_max is None:
+        frame_max = X.shape[1]
+    Y = np.abs(X[:bin_max, :frame_max])
+    return Y
 
+def createfingerprint(x, plot=False, Fs=8192, N=1024, H=100, bin_max=128, frame_max=None):
+    # 计算频谱图
+    Y = compute_spectrogram(x, Fs=Fs, N=N, H=H, bin_max=bin_max, frame_max=frame_max)
+    
+    # 检查是否生成了非空的频谱图
+    if Y.size == 0:
+        raise ValueError("Spectrogram is empty, possibly due to large hop_length or short signal length.")
+    
     # 提取峰值并使用最大滤波器选择邻域中的最高峰
-    output = peakextract(X)
-    output = scipy.ndimage.maximum_filter(output, size=25)
-    max_peak = np.max(output)
-    output = np.where(output == 0 , -1 , output)
-    output = np.where(X == output, 1, 0)
-
+    peaks = scipy.ndimage.maximum_filter(Y, size=25)
+    max_peak = np.max(peaks)
+    
+    # 生成二值图像，标记出峰值位置
+    peaks = np.where(peaks == 0, -1, peaks)
+    peaks = np.where(Y == peaks, 1, 0)
+    
     # 如果启用，显示包含原始频谱图的指纹图像
     if plot:
-        plt.imshow(X)
-        y_ind, x_ind = np.where(output != 0)
+        plt.imshow(Y, origin='lower', aspect='auto', cmap='gray_r', interpolation='nearest')
+        y_ind, x_ind = np.where(peaks != 0)
         plt.scatter(x=x_ind, y=y_ind, c='r', s=8.0)
         plt.gca().invert_yaxis()
         plt.xlabel('Frames')
         plt.ylabel('Bins')
-        plt.draw()
-
-    return output
+        plt.title('Fingerprint')
+        plt.show()
+    
+    return peaks
 # 创建指纹的函数
 # def compute_constellation_map(Y, dist_freq=7, dist_time=7, thresh=0.01):
 #     result = ndimage.maximum_filter(Y, size=[2*dist_freq+1, 2*dist_time+1], mode='constant')
@@ -101,10 +114,3 @@ def createhashes(peaks: np.ndarray, song_id: int, sample_rate: int = 8192, hop_l
 
     hash_matrix = np.array(hash_matrix)
     return hash_matrix
-
-
-
-
-
-
-
