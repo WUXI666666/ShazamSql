@@ -9,7 +9,7 @@ from scipy import ndimage
 from fingerprint import createfingerprint, createhashes
 import mysql.connector
 from record import recordaudio
-
+from createdatabase import load_reverse_index_from_file,load_song_names_from_file
 # 指纹提取参数
 dist_freq = 11
 dist_time = 7
@@ -82,7 +82,46 @@ def compute_matching_function(C_D, C_Q, tol_freq=1, tol_time=1):
         Delta[m] = TP
     shift_max = np.argmax(Delta)
     return Delta, shift_max
+# 从索引文件查询
+def fetchID_from_reverse_index(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]]:
+    matched_pairs_list = []
+    reverse_index=load_reverse_index_from_file('reverse_index.pkl')
+    song_names=load_song_names_from_file('song_names.pkl')
+    for song_hash in hash_matrix:
+        hash_value, time_anchor, _ = song_hash
+        if hash_value in reverse_index:
+            matches = reverse_index[hash_value]
+            matched_pairs_list.extend(matches)
 
+    if not matched_pairs_list:
+        return [("Not found!", 0, 0)]
+
+    num_pairs = len(hash_matrix)
+
+    matched_pairs_by_song = {}
+    for hash, song_id,anchor_time in matched_pairs_list:
+        if song_id not in matched_pairs_by_song:
+            matched_pairs_by_song[song_id] = set()
+        matched_pairs_by_song[song_id].add(hash)
+
+    ratios = []
+    for song_id, hash in matched_pairs_by_song.items():
+        ratio = len(hash) / num_pairs
+        anchors = [time_anchor for hash_value, s_id, time_anchor in matched_pairs_list if s_id == song_id]
+        if anchors:
+            max_anchor = max(anchors) + 1
+            bin_size = min(max_anchor, 2050)
+            hist_max = np.max(np.histogram(list(anchors), bins=range(0, max_anchor, bin_size-1))[0])
+        else:
+            hist_max = 0
+        ratios.append((song_id, ratio, hist_max))
+
+    top_matches = sorted(ratios, key=lambda x: (-x[1], -x[2]))[:3]
+
+    top_match_info = [(song_names[song_id], ratio, hist_max) for song_id, ratio, hist_max in top_matches]
+
+    return top_match_info
+# 从Mysql查询
 def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]]:
     conn = mysql.connector.connect(
         host='localhost',
@@ -152,8 +191,8 @@ def recognize_song_from_path(query_path: str) -> None:
         F_print = createfingerprint(x,False)
         song_id = 0
         hash_matrix = createhashes(F_print, song_id=song_id)
-        top_matches = fetchID_from_mysql(hash_matrix)
-
+        # top_matches = fetchID_from_mysql(hash_matrix)
+        top_matches =fetchID_from_reverse_index(hash_matrix)
         print('Top 3 Matches:')
         print('Song Name\t\tRatio\t\tHist max')
         for match in top_matches:
@@ -207,7 +246,6 @@ def compare_dir(path, fn_query):
                 print(Delta[shift_max])
                 plot_constellation_map(CMP_d, np.log(1 + 1 * Y_d), color='r', s=30, title=fn)
 
-recognize_song_from_path("./tests/test_1_1.wav")
-
+recognize_song_from_path("./tests/test_4.wav")
 # recognize_song(recordaudio())
 plt.show()  
