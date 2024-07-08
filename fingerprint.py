@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import scipy
 import librosa
 from scipy import ndimage
-def compute_spectrogram(x, Fs=22050, N=2048, H=512, bin_max=128, frame_max=None):
+def compute_spectrogram(x, Fs=22050, N=2048, H=512, bin_max=256, frame_max=None):
     X = lr.stft(x, n_fft=N, hop_length=H, win_length=N, window='blackman')
     if bin_max is None:
         bin_max = X.shape[0]
@@ -13,7 +13,7 @@ def compute_spectrogram(x, Fs=22050, N=2048, H=512, bin_max=128, frame_max=None)
     Y = np.abs(X[:bin_max, :frame_max])
     return Y
 
-def createfingerprint(x, plot=False, Fs=22050, N=2048, H=512, bin_max=128, frame_max=None):
+def createfingerprint(x, plot=False, Fs=22050, N=2048, H=512, bin_max=256, frame_max=None):
     # 计算频谱图
     Y = compute_spectrogram(x, Fs=Fs, N=N, H=H, bin_max=bin_max, frame_max=frame_max)
     

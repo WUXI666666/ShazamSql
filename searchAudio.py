@@ -111,13 +111,19 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
     matched_pairs_by_song = {}
     for hash_value, song_id, time_anchor in matched_pairs_list:
         if song_id not in matched_pairs_by_song:
-            matched_pairs_by_song[song_id] = []
-        matched_pairs_by_song[song_id].append(time_anchor)
+            matched_pairs_by_song[song_id] = set()
+        matched_pairs_by_song[song_id].add(hash_value)
 
     ratios = []
-    for song_id, anchors in matched_pairs_by_song.items():
-        ratio = len(anchors) / num_pairs
-        hist_max = np.max(np.histogram(anchors, bins=range(0, max(anchors) + 1, 2050))[0])
+    for song_id, unique_hashes in matched_pairs_by_song.items():
+        ratio = len(unique_hashes) / num_pairs  # 使用唯一哈希数除以查询哈希数计算匹配率
+        anchors = [time_anchor for hash_value, s_id, time_anchor in matched_pairs_list if s_id == song_id]
+        if(anchors):
+            max_anchor=max(anchors)+1
+            bin_size=min(max_anchor,2050)
+            hist_max = np.max(np.histogram(anchors, bins=range(0, max(anchors) + 1, bin_size-1))[0]) 
+        else:
+            hist_max=0
         ratios.append((song_id, ratio, hist_max))
 
     top_matches = sorted(ratios, key=lambda x: (-x[1], -x[2]))[:3]
@@ -134,6 +140,7 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
     top_match_info = [(song_names[song_id], ratio, hist_max) for song_id, ratio, hist_max in top_matches]
 
     return top_match_info
+
 
 
 
@@ -200,7 +207,7 @@ def compare_dir(path, fn_query):
                 print(Delta[shift_max])
                 plot_constellation_map(CMP_d, np.log(1 + 1 * Y_d), color='r', s=30, title=fn)
 
-# recognize_song_from_path("./tests/test_3.wav")
+recognize_song_from_path("./tests/test_1_1.wav")
 
-recognize_song(recordaudio())
+# recognize_song(recordaudio())
 plt.show()  
