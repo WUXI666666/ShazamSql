@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import scipy
 import librosa
 from scipy import ndimage
-def compute_spectrogram(x, Fs=8192, N=1024, H=100, bin_max=128, frame_max=None):
+def compute_spectrogram(x, Fs=22050, N=2048, H=512, bin_max=128, frame_max=None):
     X = lr.stft(x, n_fft=N, hop_length=H, win_length=N, window='blackman')
     if bin_max is None:
         bin_max = X.shape[0]
@@ -13,7 +13,7 @@ def compute_spectrogram(x, Fs=8192, N=1024, H=100, bin_max=128, frame_max=None):
     Y = np.abs(X[:bin_max, :frame_max])
     return Y
 
-def createfingerprint(x, plot=False, Fs=8192, N=1024, H=100, bin_max=128, frame_max=None):
+def createfingerprint(x, plot=False, Fs=22050, N=2048, H=512, bin_max=128, frame_max=None):
     # 计算频谱图
     Y = compute_spectrogram(x, Fs=Fs, N=N, H=H, bin_max=bin_max, frame_max=frame_max)
     
@@ -22,7 +22,7 @@ def createfingerprint(x, plot=False, Fs=8192, N=1024, H=100, bin_max=128, frame_
         raise ValueError("Spectrogram is empty, possibly due to large hop_length or short signal length.")
     
     # 提取峰值并使用最大滤波器选择邻域中的最高峰
-    peaks = scipy.ndimage.maximum_filter(Y, size=25)
+    peaks = scipy.ndimage.maximum_filter(Y, size=15)
     max_peak = np.max(peaks)
     
     # 生成二值图像，标记出峰值位置

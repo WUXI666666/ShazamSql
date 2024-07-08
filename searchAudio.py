@@ -97,7 +97,7 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
     hash_values_str = ','.join(map(str, hash_values))
 
     # 批量查询哈希值
-    query = f"SELECT song_id, time_anchor FROM fingerprints WHERE hash_value IN ({hash_values_str})"
+    query = f"SELECT hash_value, song_id, time_anchor FROM fingerprints WHERE hash_value IN ({hash_values_str})"
     cursor.execute(query)
     matched_pairs_list = cursor.fetchall()
 
@@ -109,7 +109,7 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
     num_pairs = len(hash_matrix)
 
     matched_pairs_by_song = {}
-    for song_id, time_anchor in matched_pairs_list:
+    for hash_value, song_id, time_anchor in matched_pairs_list:
         if song_id not in matched_pairs_by_song:
             matched_pairs_by_song[song_id] = []
         matched_pairs_by_song[song_id].append(time_anchor)
@@ -137,10 +137,12 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
 
 
 
+
+
 def recognize_song_from_path(query_path: str) -> None:
     try:
-        x, fs = lr.load(query_path, sr=8192, mono=True)
-        F_print = createfingerprint(x,True)
+        x, fs = lr.load(query_path, sr=22050, mono=True)
+        F_print = createfingerprint(x,False)
         song_id = 0
         hash_matrix = createhashes(F_print, song_id=song_id)
         top_matches = fetchID_from_mysql(hash_matrix)
@@ -198,7 +200,7 @@ def compare_dir(path, fn_query):
                 print(Delta[shift_max])
                 plot_constellation_map(CMP_d, np.log(1 + 1 * Y_d), color='r', s=30, title=fn)
 
-recognize_song_from_path("./tests/test_3.wav")
+# recognize_song_from_path("./tests/test_3.wav")
 
-# recognize_song(recordaudio())
-plt.show()
+recognize_song(recordaudio())
+plt.show()  

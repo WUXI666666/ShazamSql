@@ -21,7 +21,7 @@ def create_database(directory: str = './songs', extensions: List[str] = ['*.wav'
         song_name = os.path.basename(file)
         song_names.append(song_name)
 
-        x, fs = librosa.load(file, sr=8192, mono=True)
+        x, fs = librosa.load(file, sr=22050, mono=True)
         F_print = createfingerprint(x)
         hash_matrix = createhashes(F_print, song_id=i)
 
