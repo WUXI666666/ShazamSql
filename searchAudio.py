@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from genericpath import isfile
 from typing import List, Tuple
 import numpy as np
@@ -85,8 +86,7 @@ def compute_matching_function(C_D, C_Q, tol_freq=1, tol_time=1):
 # 从索引文件查询
 def fetchID_from_reverse_index(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]]:
     matched_pairs_list = []
-    reverse_index=load_reverse_index_from_file('reverse_index.pkl')
-    song_names=load_song_names_from_file('song_names.pkl')
+    
     for song_hash in hash_matrix:
         hash_value, time_anchor, _ = song_hash
         if hash_value in reverse_index:
@@ -187,22 +187,27 @@ def fetchID_from_mysql(hash_matrix: np.ndarray) -> List[Tuple[str, float, float]
 
 def recognize_song_from_path(query_path: str) -> None:
     try:
-        x, fs = lr.load(query_path, sr=22050, mono=True)
-        F_print = createfingerprint(x,False)
-        song_id = 0
-        hash_matrix = createhashes(F_print, song_id=song_id)
-        # top_matches = fetchID_from_mysql(hash_matrix)
-        top_matches =fetchID_from_reverse_index(hash_matrix)
-        print('Top 3 Matches:')
-        print('Song Name\t\tRatio\t\tHist max')
-        for match in top_matches:
-            song_name, ratio, hist = match
-            print(f"{song_name}\t\t{ratio:.4f}\t\t{hist:.4f}")
+        print(f"Processed {query_path}\n" )
+        with open("result.txt", "a") as f:
+            x, fs = lr.load(query_path, sr=22050, mono=True)
+            F_print = createfingerprint(x, False)
+            song_id = 0
+            hash_matrix = createhashes(F_print, song_id=song_id)
+            # top_matches = fetchID_from_mysql(hash_matrix)
+            top_matches = fetchID_from_reverse_index(hash_matrix)
+            
+            f.write(f'{query_path}Top 3 Matches:\n')
+            f.write('Song Name\t\tRatio\t\tHist max\n')
+            for match in top_matches:
+                song_name, ratio, hist = match
+                f.write(f"{song_name}\t\t\t{ratio:.4f}\t\t\t{hist:.4f}\n")
 
-        best_match = top_matches[0][0]
-        print(f"\nMost matched song: {best_match}")
+            best_match = top_matches[0][0]
+            f.write(f"Most matched song: {best_match}\n")
     except Exception as e:
-        print(f"Error: {e}")
+        with open("result.txt", "a") as f:
+            f.write(f"Error: {e}\n")
+
 
 def recognize_song(x: np.ndarray) -> None:
     try:
@@ -232,6 +237,9 @@ def compare_2songs(path1, path2):
     plot_constellation_map(CM1, np.log(1 + 1 * Y1), color='r', s=30, title=path1)
     plot_constellation_map(CM2, np.log(1 + 1 * Y2), color='r', s=30, title=path2)
 
+def process_file(file_path):
+    recognize_song_from_path(file_path)
+
 def compare_dir(path, fn_query):
     Y_q = compute_spectrogram(fn_query)
     CMP_q = compute_constellation_map(Y_q, dist_freq, dist_time)
@@ -245,7 +253,25 @@ def compare_dir(path, fn_query):
                 Delta, shift_max = compute_matching_function(CMP_d, CMP_q, tol_freq=0, tol_time=0)
                 print(Delta[shift_max])
                 plot_constellation_map(CMP_d, np.log(1 + 1 * Y_d), color='r', s=30, title=fn)
-
-recognize_song_from_path("./tests/test_4.wav")
-# recognize_song(recordaudio())
-plt.show()  
+def main():
+    directory = "./songsearch"
+    file_paths = [os.path.join(directory, file) for file in os.listdir(directory) if os.path.isfile(os.path.join(directory, file))]
+    
+    # 使用多线程处理文件
+    recommended_workers = os.cpu_count()
+    with ThreadPoolExecutor(max_workers=recommended_workers) as executor:
+        results = list(executor.map(process_file, file_paths))
+    
+    # 使用单线程替代方法逐个识别歌曲
+    # for file_path in file_paths:
+    #     recognize_song_from_path(file_path)
+    
+    # 处理录音识别
+    # recorded_file = recordaudio()
+    # recognize_song_from_path(recorded_file)
+if __name__=="__main__":
+    global reverse_index
+    global song_names
+    reverse_index=load_reverse_index_from_file('reverse_index.pkl')
+    song_names=load_song_names_from_file('song_names.pkl')
+    main()

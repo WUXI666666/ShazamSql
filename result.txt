@@ -1,0 +1,186 @@
+./songsearch\00.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1			0.7700			2266.0000
+1111111			0.7700			2266.0000
+1154			0.2496			1241.0000
+Most matched song: 1
+./songsearch\01.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+12			0.5004			8266.0000
+1154			0.2494			4349.0000
+1194			0.2159			4813.0000
+Most matched song: 12
+./songsearch\02.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1287			0.6652			10736.0000
+1147			0.2252			3045.0000
+1193			0.1438			2072.0000
+Most matched song: 1287
+./songsearch\10.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1269			0.8534			3412.0000
+1147			0.2754			1186.0000
+1270			0.2417			1503.0000
+Most matched song: 1269
+./songsearch\11.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1277			0.5986			12086.0000
+1237			0.2209			6755.0000
+1272			0.1942			5821.0000
+Most matched song: 1277
+./songsearch\12.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1276			0.6658			9753.0000
+1241			0.2128			5786.0000
+1242			0.2113			4876.0000
+Most matched song: 1276
+./songsearch\13.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1275			0.6600			9609.0000
+1242			0.2894			6250.0000
+1237			0.2637			4962.0000
+Most matched song: 1275
+./songsearch\14.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1274			0.6632			10001.0000
+1244			0.1598			3803.0000
+1242			0.1587			4289.0000
+Most matched song: 1274
+./songsearch\15.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1273			0.6640			9386.0000
+1241			0.2426			5505.0000
+1230			0.2266			5238.0000
+Most matched song: 1273
+./songsearch\16.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1272			0.6634			9781.0000
+1237			0.2601			6534.0000
+1242			0.2220			6325.0000
+Most matched song: 1272
+./songsearch\17.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1271			0.6922			7726.0000
+1255			0.2492			2646.0000
+1281			0.2059			2469.0000
+Most matched song: 1271
+./songsearch\18.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1270			0.8094			3636.0000
+1147			0.2709			1222.0000
+1269			0.2543			1503.0000
+Most matched song: 1270
+./songsearch\19.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1268			0.8956			2188.0000
+1118			0.2659			1479.0000
+1246			0.2272			792.0000
+Most matched song: 1268
+./songsearch\20.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1267			0.8149			3350.0000
+1246			0.3098			1854.0000
+1281			0.2462			1305.0000
+Most matched song: 1267
+./songsearch\21.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1265			0.8408			2398.0000
+1118			0.2922			1862.0000
+1246			0.2588			1020.0000
+Most matched song: 1265
+./songsearch\22.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1264			0.8585			2422.0000
+1246			0.2703			1172.0000
+1281			0.2405			878.0000
+Most matched song: 1264
+./songsearch\23.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1263			0.9150			1808.0000
+1147			0.2925			692.0000
+1190			0.2095			690.0000
+Most matched song: 1263
+./songsearch\24.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1262			0.8026			3648.0000
+1246			0.2662			1458.0000
+1118			0.2211			2364.0000
+Most matched song: 1262
+./songsearch\25.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1261			0.7777			4784.0000
+1246			0.2392			1816.0000
+1281			0.2315			1812.0000
+Most matched song: 1261
+./songsearch\26.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1260			0.8779			2508.0000
+1147			0.2618			884.0000
+1246			0.2059			788.0000
+Most matched song: 1260
+./songsearch\27.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1259			0.7791			4702.0000
+1246			0.2620			2053.0000
+1154			0.2365			2593.0000
+Most matched song: 1259
+./songsearch\28.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1258			0.8827			2364.0000
+1147			0.2838			819.0000
+1274			0.1908			770.0000
+Most matched song: 1258
+./songsearch\29.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1257			0.8452			3030.0000
+1118			0.2697			1890.0000
+1147			0.2450			762.0000
+Most matched song: 1257
+./songsearch\3.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1287			0.6652			10736.0000
+1147			0.2252			3045.0000
+1193			0.1438			2072.0000
+Most matched song: 1287
+./songsearch\30.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1256			0.8940			2154.0000
+1246			0.2759			1128.0000
+1281			0.2290			855.0000
+Most matched song: 1256
+./songsearch\4.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1278			0.6940			10151.0000
+1242			0.2695			6040.0000
+1241			0.2509			6054.0000
+Most matched song: 1278
+./songsearch\5.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1284			0.7332			6894.0000
+1242			0.1677			1571.0000
+1118			0.1666			2647.0000
+Most matched song: 1284
+./songsearch\6.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1281			0.6632			10458.0000
+1255			0.1620			3858.0000
+1246			0.1618			3140.0000
+Most matched song: 1281
+./songsearch\7.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1280			0.8410			3426.0000
+1237			0.2099			1092.0000
+1246			0.2087			1216.0000
+Most matched song: 1280
+./songsearch\8.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1255			0.5953			10615.0000
+1281			0.1481			4595.0000
+1237			0.1181			3557.0000
+Most matched song: 1255
+./songsearch\9.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1279			0.8778			2528.0000
+1147			0.2853			978.0000
+1193			0.2327			867.0000
+Most matched song: 1279

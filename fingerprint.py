@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import scipy
 import librosa
 from scipy import ndimage
-def compute_spectrogram(x, Fs=22050, N=2048, H=512, bin_max=256, frame_max=None):
+def compute_spectrogram(x, Fs=22050, N=2048, H=1024, bin_max=128, frame_max=None):
     X = lr.stft(x, n_fft=N, hop_length=H, win_length=N, window='blackman')
     if bin_max is None:
         bin_max = X.shape[0]
@@ -13,7 +13,7 @@ def compute_spectrogram(x, Fs=22050, N=2048, H=512, bin_max=256, frame_max=None)
     Y = np.abs(X[:bin_max, :frame_max])
     return Y
 
-def createfingerprint(x, plot=False, Fs=22050, N=2048, H=512, bin_max=256, frame_max=None):
+def createfingerprint(x, plot=False, Fs=22050, N=2048, H=1024, bin_max=128, frame_max=None):
     # 计算频谱图
     Y = compute_spectrogram(x, Fs=Fs, N=N, H=H, bin_max=bin_max, frame_max=frame_max)
     
@@ -48,7 +48,7 @@ def createfingerprint(x, plot=False, Fs=22050, N=2048, H=512, bin_max=256, frame
 #     return Cmap
 # def createfingerprint(x, plot=False):
 #     # 生成频谱图并转换为对数刻度
-#     X = librosa.stft(x, n_fft=1024, hop_length=32, window="blackman")
+#     X = librosa.stft(x, n_fft=2048, hop_length=32, window="blackman")
 #     X = np.abs(X)
 #     L, W = np.shape(X)
 
@@ -88,7 +88,7 @@ def peakextract(S):
 
     return peaks
 
-def createhashes(peaks: np.ndarray, song_id: int, sample_rate: int = 8192, hop_length: int = 410) -> np.ndarray:
+def createhashes(peaks: np.ndarray, song_id: int, sample_rate=22050, hop_length: int = 1024) -> np.ndarray:
     peaks = np.transpose(peaks)
     points = np.where(peaks != 0)
     num_points = np.shape(points[0])[0]
@@ -99,7 +99,7 @@ def createhashes(peaks: np.ndarray, song_id: int, sample_rate: int = 8192, hop_l
     # 计算时间刻度
     
     for i in range(num_points):
-        for j in range(1, min(16, num_points - i)):  # 限制邻域大小为7
+        for j in range(1, min(5, num_points - i)):  # 限制邻域大小为7
             freq_anchor = points[1][i]
             freq_other = points[1][i+j]
             delta_time_frames = abs(points[0][i] - points[0][i+j])
