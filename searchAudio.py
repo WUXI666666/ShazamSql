@@ -254,7 +254,7 @@ def compare_dir(path, fn_query):
                 print(Delta[shift_max])
                 plot_constellation_map(CMP_d, np.log(1 + 1 * Y_d), color='r', s=30, title=fn)
 def main():
-    directory = "./songsearch"
+    directory = "./tests"
     file_paths = [os.path.join(directory, file) for file in os.listdir(directory) if os.path.isfile(os.path.join(directory, file))]
     
     # 使用多线程处理文件

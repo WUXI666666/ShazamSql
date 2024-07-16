@@ -184,3 +184,9 @@ Song Name		Ratio		Hist max
 1147			0.2853			978.0000
 1193			0.2327			867.0000
 Most matched song: 1279
+./tests\8.mp3Top 3 Matches:
+Song Name		Ratio		Hist max
+1255			0.5953			10615.0000
+1281			0.1481			4595.0000
+1237			0.1181			3557.0000
+Most matched song: 1255
